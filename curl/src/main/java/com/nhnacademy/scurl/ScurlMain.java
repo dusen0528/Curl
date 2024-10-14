@@ -3,6 +3,8 @@ package com.nhnacademy.scurl;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
+import java.util.List;
 
 import com.nhnacademy.scurl.http.HttpMethod;
 import com.nhnacademy.scurl.http.HttpRequest;
@@ -23,14 +25,13 @@ public class ScurlMain {
         // Http 요청 설정
         HttpRequest request = new HttpRequest();
         request.setMethod(HttpMethod.valueOf(optionParser.getRequestMethod()));
-        request.setUrl("http://localhost:8080"); // 테스트용 URL
+        request.setUrl(args[args.length - 1]); // 마지막 인자를 URL로 설정
 
         String[] headers = optionParser.getHeaders();
         if (headers != null) {
             for (String header : headers) {
                 String[] headerKeyValue = header.split(": ");
                 request.setHeaders(headerKeyValue[0], headerKeyValue[1]);
-
             }
         }
 
@@ -52,8 +53,8 @@ public class ScurlMain {
         connection.setRequestMethod(request.getMethod().name());
 
         // 헤더 추가
-        for (String key : request.getHeaders().keySet()) {
-            connection.setRequestProperty(key, request.getHeaders().get(key));
+        for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
+            connection.setRequestProperty(entry.getKey(), entry.getValue());
         }
 
         // PUT, POST 요청 바디 설정
@@ -65,11 +66,17 @@ public class ScurlMain {
             }
         }
 
+        // 응답 코드 및 헤더 출력
         int responseCode = connection.getResponseCode();
         System.out.println("ResponseCode : " + responseCode);
 
-        StringBuilder response = new StringBuilder();
+        // 응답 헤더 출력
+        for (Map.Entry<String, List<String>> header : connection.getHeaderFields().entrySet()) {
+            System.out.println(header.getKey() + ": " + header.getValue());
+        }
 
+        // 응답 내용 읽기
+        StringBuilder response = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
             String responseLine;
             while ((responseLine = br.readLine()) != null) {
@@ -81,7 +88,6 @@ public class ScurlMain {
         httpResponse.setStatusCode(responseCode);
         httpResponse.setBody(response.toString());
 
-        System.out.println("ReseponseBody : " + httpResponse.getBody());
-
+        System.out.println("ResponseBody : " + httpResponse.getBody());
     }
 }

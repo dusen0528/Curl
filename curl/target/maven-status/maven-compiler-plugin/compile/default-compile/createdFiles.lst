@@ -1,7 +1,7 @@
-com/nhnAcacdemy/scurl/http/HttpMethod.class
-com/nhnAcacdemy/scurl/http/HttpResponse.class
-com/nhnAcacdemy/scurl/http/HttpRequest.class
-com/nhnAcacdemy/scurl/ScurlMain.class
-com/nhnAcacdemy/scurl/util/OptionParser.class
-com/nhnAcacdemy/scurl/http/HttpClient.class
-com/nhnAcacdemy/App.class
+com/nhnacademy/scurl/http/HttpRequest.class
+com/nhnacademy/scurl/Server.class
+com/nhnacademy/scurl/http/HttpMethod.class
+com/nhnacademy/scurl/util/OptionParser.class
+com/nhnacademy/scurl/ScurlMain.class
+com/nhnacademy/scurl/http/HttpResponse.class
+com/nhnacademy/scurl/http/HttpClient.class
